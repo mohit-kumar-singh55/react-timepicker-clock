@@ -20,7 +20,11 @@ const TimePickerClock = ({ onSet, onCancel, primaryColor }) => {
     })
     const [original, setOriginal] = useState({ hour: 0, minute: 0 });
     const [noon, setNoon] = useState('AM');                             // default
-    const [mainColor, setMainColor] = useState(primaryColor || '#f65a54');
+    const [mainColor, setMainColor] = useState('#f65a54');
+
+    useEffect(() => {
+        if (primaryColor) setMainColor(primaryColor);
+    }, [primaryColor])
 
     // function returning original vals (onSet)
     const onClickSet = () => {
