@@ -7,7 +7,7 @@ const BASEPOINT = { x: 150, y: 0 };
 const HOURS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 const MINUTES = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 0];
 
-const TimePickerClock = ({ onSet, onCancel }) => {
+const TimePickerClock = ({ onSet, onCancel, primaryColor }) => {
     const clockRef = useRef(null);
     const hourRef = useRef(null);
     const minuteRef = useRef(null);
@@ -20,6 +20,7 @@ const TimePickerClock = ({ onSet, onCancel }) => {
     })
     const [original, setOriginal] = useState({ hour: 0, minute: 0 });
     const [noon, setNoon] = useState('AM');                             // default
+    const [mainColor, setMainColor] = useState(primaryColor || '#f65a54');
 
     // function returning original vals (onSet)
     const onClickSet = () => {
@@ -104,7 +105,7 @@ const TimePickerClock = ({ onSet, onCancel }) => {
     return (
         <div className='flex flex-col items-center max-w-[350px] w-full mx-auto rounded-md overflow-hidden'>
             {/* input */}
-            <div className="flex items-center justify-center w-full p-5 gap-3 text-[34px] cursor-default bg-[#f65a54] text-white">
+            <div className={`flex items-center justify-center w-full p-5 gap-3 text-[34px] cursor-default bg-[${mainColor}] text-white`}>
                 <span
                     onClick={() => setSelected({ ...false, hour: true })}
                     className={`font-medium cursor-pointer ${selected?.hour ? 'text-white' : 'text-[#ffffff99]'}`}
@@ -142,14 +143,14 @@ const TimePickerClock = ({ onSet, onCancel }) => {
                 >
                     {selected?.hour ? (
                         <>
-                            <div className="hourHand" ref={hourRef} />
-                            <div className="center" />
+                            <div className={`hourHand bg-[${mainColor}]`} ref={hourRef} />
+                            <div className={`center bg-[${mainColor}]`} />
                             <ul>
                                 {HOURS?.map((x, i) => (
                                     <li
                                         key={i}
                                         onClick={() => setHour(30 * (i + 1))}
-                                        className={original?.hour === x ? 'bg-[#f65a54] text-white' : 'bg-transparent text-black'}
+                                        className={original?.hour === x ? `bg-[${mainColor}] text-white` : 'bg-transparent text-black'}
                                     >
                                         <span>
                                             {x}
@@ -160,14 +161,14 @@ const TimePickerClock = ({ onSet, onCancel }) => {
                         </>
                     ) : (
                         <>
-                            <span className="minuteHand" ref={minuteRef} />
-                            <div className="center" />
+                            <span className={`minuteHand bg-[${mainColor}]`} ref={minuteRef} />
+                            <div className={`center bg-[${mainColor}]`} />
                             <ul>
                                 {MINUTES?.map((x, i) => (
                                     <li
                                         key={i}
                                         onClick={() => setMinute(30 * (i + 1))}
-                                        className={original?.minute === x ? 'bg-[#f65a54] text-white' : 'bg-transparent text-black'}
+                                        className={original?.minute === x ? `bg-[${mainColor}] text-white` : 'bg-transparent text-black'}
                                     >
                                         <span>
                                             {x}
@@ -182,11 +183,11 @@ const TimePickerClock = ({ onSet, onCancel }) => {
 
             {/* buttons */}
             <div className='flex w-full items-center justify-end p-4 gap-4 bg-white font-medium'>
-                <button onClick={onCancel} className={`text-center text-[#f65a54]`}>
+                <button onClick={onCancel} className={`text-center text-[${mainColor}]`}>
                     Cancel
                 </button>
 
-                <button onClick={onClickSet} className={`text-center px-6 py-1 rounded-full bg-[#f65a54] text-white`}>
+                <button onClick={onClickSet} className={`text-center px-6 py-1 rounded-full bg-[${mainColor}] text-white`}>
                     Set
                 </button>
             </div>

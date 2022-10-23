@@ -9,10 +9,9 @@
 }
 
 .center {
-    background-color: #f65a54;
     position: absolute;
     left: calc(50% - 9px);
-    top: calc(50% - 2px);
+    top: calc(50% - 0px);
     width: 10px;
     height: 10px;
     border-radius: 50%;
@@ -21,28 +20,26 @@
 
 .hourHand {
     width: 4px;
-    height: 124px;
-    background-color: #f65a54;
+    height: 126px;
     transform-origin: bottom center;
     border-radius: 4px;
     position: absolute;
-    top: 27px;
+    top: 25px;
     left: 144px;
-    z-index: 10;
+    z-index: 5;
     transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
     transform: rotate(360deg);
 }
 
 .minuteHand {
     width: 4px;
-    height: 124px;
-    background-color: #f65a54;
+    height: 126px;
     transform-origin: bottom center;
     border-radius: 4px;
     position: absolute;
-    top: 27px;
+    top: 25px;
     left: 144px;
-    z-index: 9;
+    z-index: 5;
     transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
     transform: rotate(360deg);
 }
@@ -63,6 +60,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 100%;
+    z-index: 10;
 }
 
 .clock ul li:nth-child(1) {
