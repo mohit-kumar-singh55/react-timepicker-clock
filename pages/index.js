@@ -7,7 +7,7 @@ const BASEPOINT = { x: 150, y: 0 };
 const HOURS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 const MINUTES = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 0];
 
-const TimePickerClock = () => {
+const TimePickerClock = ({ onSet, onCancel }) => {
     const clockRef = useRef(null);
     const hourRef = useRef(null);
     const minuteRef = useRef(null);
@@ -21,13 +21,13 @@ const TimePickerClock = () => {
     const [original, setOriginal] = useState({ hour: 0, minute: 0 });
     const [noon, setNoon] = useState('AM');                             // default
 
-    // function returning original val to outside
-    // useEffect(() => {
-    //     let hh = original?.hour < 10 ? '0' + original?.hour : original?.hour;
-    //     let mm = original?.minute < 10 ? '0' + original?.minute : original?.minute;
+    // function returning original vals (onSet)
+    const onClickSet = () => {
+        let hh = original?.hour < 10 ? '0' + original?.hour : original?.hour;
+        let mm = original?.minute < 10 ? '0' + original?.minute : original?.minute;
 
-    //     onChange(hh + ':' + mm + ' ' + noon);
-    // }, [original, noon])
+        onSet(hh, mm, noon, hh + ':' + mm + ' ' + noon);                        // (hour, minute, noon, full_val)
+    }
 
     useEffect(() => {
         const maskPosition = clockRef?.current?.getBoundingClientRect();
@@ -102,78 +102,93 @@ const TimePickerClock = () => {
     };
 
     return (
-        <div className='flex flex-col items-center gap-3 max-w-[300px] w-full'>
+        <div className='flex flex-col items-center max-w-[350px] w-full mx-auto rounded-md overflow-hidden'>
             {/* input */}
-            <div className="flex items-center gap-3 text-[17px] cursor-default">
+            <div className="flex items-center justify-center w-full p-5 gap-3 text-[34px] cursor-default bg-[#f65a54] text-white">
                 <span
                     onClick={() => setSelected({ ...false, hour: true })}
-                    className={`font-medium cursor-pointer ${selected?.hour ? 'text-[#f65a54]' : 'text-[#f6595490]'}`}
+                    className={`font-medium cursor-pointer ${selected?.hour ? 'text-white' : 'text-[#ffffff99]'}`}
                 >
                     {original?.hour < 10 ? '0' + original?.hour : original?.hour}
                 </span>
                 {' : '}
                 <span
                     onClick={() => setSelected({ ...false, minute: true })}
-                    className={`font-medium cursor-pointer ${selected?.minute ? 'text-[#f65a54]' : 'text-[#f6595490]'}`}
+                    className={`font-medium cursor-pointer ${selected?.minute ? 'text-white' : 'text-[#ffffff99]'}`}
                 >
                     {original?.minute < 10 ? '0' + original?.minute : original?.minute}
                 </span>
 
-                <span onClick={() => setNoon('AM')} className={`text-center px-1 rounded-sm font-medium cursor-pointer transition-all duration-200 ${noon === 'AM' ? 'bg-[#f65a54] text-white' : 'bg-[#f659545a] text-[#f65a54]'}`}>
-                    AM
-                </span>
+                <div className='flex flex-col items-center text-[14px] overflow-hidden rounded-sm'>
+                    <span onClick={() => setNoon('AM')} className={`text-center font-medium cursor-pointer transition-all duration-200 ${noon === 'AM' ? 'text-white' : 'text-[#ffffff99]'}`}>
+                        AM
+                    </span>
 
-                <span onClick={() => setNoon('PM')} className={`text-center px-1 rounded-sm font-medium cursor-pointer transition-all duration-200 ${noon === 'PM' ? 'bg-[#f65a54] text-white' : 'bg-[#f659545a] text-[#f65a54]'}`}>
-                    PM
-                </span>
+                    <span onClick={() => setNoon('PM')} className={`text-center font-medium cursor-pointer transition-all duration-200 ${noon === 'PM' ? 'text-white' : 'text-[#ffffff99]'}`}>
+                        PM
+                    </span>
+                </div>
             </div>
 
             {/* clock */}
-            <div
-                className="clock"
-                ref={clockRef}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchUp}
-                onMouseMove={handleMove}
-                onMouseUp={handleMoveUp}
-            >
-                {selected?.hour ? (
-                    <>
-                        <div className="hourHand" ref={hourRef} />
-                        <div className="center" />
-                        <ul>
-                            {HOURS?.map((x, i) => (
-                                <li
-                                    key={i}
-                                    onClick={() => setHour(30 * (i + 1))}
-                                    className={original?.hour === x ? 'bg-[#f65a54] text-white' : 'bg-transparent text-black'}
-                                >
-                                    <span>
-                                        {x}
-                                    </span>
-                                </li>
-                            ))}
-                        </ul>
-                    </>
-                ) : (
-                    <>
-                        <span className="minuteHand" ref={minuteRef} />
-                        <div className="center" />
-                        <ul>
-                            {MINUTES?.map((x, i) => (
-                                <li
-                                    key={i}
-                                    onClick={() => setMinute(30 * (i + 1))}
-                                    className={original?.minute === x ? 'bg-[#f65a54] text-white' : 'bg-transparent text-black'}
-                                >
-                                    <span>
-                                        {x}
-                                    </span>
-                                </li>
-                            ))}
-                        </ul>
-                    </>
-                )}
+            <div className='flex w-full items-center justify-center p-4 bg-white'>
+                <div
+                    className="clock"
+                    ref={clockRef}
+                    onTouchMove={handleTouchMove}
+                    onTouchEnd={handleTouchUp}
+                    onMouseMove={handleMove}
+                    onMouseUp={handleMoveUp}
+                >
+                    {selected?.hour ? (
+                        <>
+                            <div className="hourHand" ref={hourRef} />
+                            <div className="center" />
+                            <ul>
+                                {HOURS?.map((x, i) => (
+                                    <li
+                                        key={i}
+                                        onClick={() => setHour(30 * (i + 1))}
+                                        className={original?.hour === x ? 'bg-[#f65a54] text-white' : 'bg-transparent text-black'}
+                                    >
+                                        <span>
+                                            {x}
+                                        </span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </>
+                    ) : (
+                        <>
+                            <span className="minuteHand" ref={minuteRef} />
+                            <div className="center" />
+                            <ul>
+                                {MINUTES?.map((x, i) => (
+                                    <li
+                                        key={i}
+                                        onClick={() => setMinute(30 * (i + 1))}
+                                        className={original?.minute === x ? 'bg-[#f65a54] text-white' : 'bg-transparent text-black'}
+                                    >
+                                        <span>
+                                            {x}
+                                        </span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </>
+                    )}
+                </div>
+            </div>
+
+            {/* buttons */}
+            <div className='flex w-full items-center justify-end p-4 gap-4 bg-white font-medium'>
+                <button onClick={onCancel} className={`text-center text-[#f65a54]`}>
+                    Cancel
+                </button>
+
+                <button onClick={onClickSet} className={`text-center px-6 py-1 rounded-full bg-[#f65a54] text-white`}>
+                    Set
+                </button>
             </div>
         </div>
     )
