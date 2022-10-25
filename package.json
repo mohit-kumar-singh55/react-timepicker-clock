@@ -12,9 +12,14 @@
   ],
   "author": {
     "name": "Mohit Kumar Singh",
-    "email": "mohitkumarsingh12344@gmail.com"
+    "email": "mohitkumarsingh12344@gmail.com",
+    "url": "https://react-timepicker-clock.vercel.app/"
   },
   "description": "A react timepicker clock also compatible with next.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mohit-kumar-singh55/react-timepicker-clock"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
