@@ -1,6 +1,6 @@
 {
   "name": "react-timepicker-clock",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "main": "pages/index.js",
   "type": "module",
   "exports": {
